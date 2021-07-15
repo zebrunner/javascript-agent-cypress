@@ -5,5 +5,30 @@
   "dependencies": {
     "axios": "^0.21.1",
     "node-ipc": "^9.1.4"
-  }
+  },
+  "name": "@zebrunner/javascript-agent-cypress",
+  "description": "Zebrunner Agent for Cypress",
+  "version": "1.0.1",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zebrunner/javascript-agent-cypress.git"
+  },
+  "keywords": [
+    "zebrunner",
+    "reporting",
+    "Cypress"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zebrunner/javascript-agent-cypress/issues"
+  },
+  "homepage": "https://github.com/zebrunner/javascript-agent-cypress#readme"
 }
