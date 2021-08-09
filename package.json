@@ -8,7 +8,7 @@
   },
   "name": "@zebrunner/javascript-agent-cypress",
   "description": "Zebrunner Agent for Cypress",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "index.js",
   "directories": {
     "lib": "lib"
