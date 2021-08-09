@@ -12,17 +12,17 @@ $ npm install @zebrunner/javascript-agent-cypress
 ```
     "reporter": "@zebrunner/javascript-agent-cypress",
     "reporterOptions": {
-        "zbr_service_url": "zebrunner_service_url",
-        "zbr_token": "zebrunner_token",
-        "zbr_project": "zebrunner_project",
-        "zbr_environment": "zebrunner_environment"
+        "reportingServerHostname": "zebrunner_service_url",
+        "reportingServerAccessToken": "zebrunner_token",
+        "reportingProjectKey": "zebrunner_project",
+        "reportingRunEnvironment": "zebrunner_environment"
     }
 ```
 where parameters are:
 - zebrunner_service_url - url of Zebrunner service taken from Zebrunner configuration page
 - zebrunner_token - access token taken from Zebrunner configuration page
 - zebrunner_project (optional) - project key in Zebrunner if used
-- zbr_environment (optional) - tested environment. if specified will be tracked with test run
+- zebrunner_environment (optional) - tested environment. if specified will be tracked with test run
 
 2. Include next lines in cypress/plugins/index.js file
 ```
