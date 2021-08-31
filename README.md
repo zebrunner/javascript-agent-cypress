@@ -151,6 +151,6 @@ where `test_keys` is list of related Xray cases split by a comma.
 By default agent pushes to Zebrunner server screenshot for every test failure.
 You may find it in the details for the failed tests at the report page.
 Also agent automatically sends video of entire spec execution to Zebrunner for every failed test.
-You may find it attached to appropriate test results page.
-Note:
-Do not start name of your test methods from `(` symbol in order to get your screenshot saved properly
+You may find it attached to appropriate test results page.     
+Note:    
+Do not start name of your test methods from `(` symbol in order to get your screenshot saved properly     
