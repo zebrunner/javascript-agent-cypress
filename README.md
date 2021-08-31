@@ -51,7 +51,7 @@ This section contains details on configuration required for the reporter and key
     ```javascript
     const zbrPlugin = require('@zebrunner/javascript-agent-cypress/lib/plugin');
     
-    module.exports = (on) => { zbrPlugin(on); }
+    module.exports = (on, config) => { zbrPlugin(on, config); }
     ```
 
    Include the following next line in cypress/support/commands.js file
