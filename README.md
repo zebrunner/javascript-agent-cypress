@@ -66,6 +66,16 @@ before(() => {
 })
 ```
 
+#### Configuration via environment variables
+
+The following configuration parameters are recognized by the agent:
+- `REPORTING_SERVER_HOSTNAME` - mandatory if reporting is enabled. It is Zebrunner server hostname. It can be obtained in Zebrunner on the 'Account & profile' page under the 'Service URL' section;
+- `REPORTING_SERVER_ACCESS_TOKEN` - mandatory if reporting is enabled. Access token must be used to perform API calls. It can be obtained in Zebrunner on the 'Account & profile' page under the 'Token' section;
+- `REPORTING_PROJECT_KEY` - optional value. It is the project that the test run belongs to. The default value is `UNKNOWN`. You can manage projects in Zebrunner in the appropriate section;
+- `REPORTING_RUN_DISPLAY_NAME` - optional value. It is the display name of the test run. The default value is `Default Suite`;
+- `REPORTING_RUN_BUILD` - optional value. It is the build number that is associated with the test run. It can depict either the test build number or the application build number;
+- `REPORTING_RUN_ENVIRONMENT` - optional value. It is the environment where the tests will run.
+
 ### Tracking test maintainer
 
 You may want to add transparency to the process of automation maintenance by having an engineer responsible for evolution of specific tests or test classes.
@@ -136,3 +146,9 @@ describe('some spec', () => {
 }
 ```
 where `test_keys` is list of related Xray cases split by a comma.
+
+### Tracking of test artifacts
+By default agent pushes to Zebrunner server screenshot for every test failure.
+You may find it in the details for the failed tests at the report page.
+Also agent automatically sends video of entire spec execution to Zebrunner for every failed test.
+You may find it attached to appropriate test results page.
