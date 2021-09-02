@@ -33,6 +33,7 @@ This section contains details on configuration required for the reporter and key
             "reportingRunBuild": "1.0-alpha",
             "reportingRunDisplayName": "My regression suite",
             "reportingRunLocale": "en_US",
+            "reportingCiRunId": "46190073-55db-4411-ac42-fd42b7c96958"
         }
     ```
 
@@ -44,6 +45,7 @@ This section contains details on configuration required for the reporter and key
     - `reportingRunBuild` (optional) - build number that is associated with the test run. It can depict either the test build number or the application build number
     - `reportingRunDisplayName` (optional) - display name of the test run
     - `reportingRunLocale` (optional) - locale, that will be displayed for the run in Zebrunner if specified
+    - `reportingCiRunId` (optional) - id of the run on CI. Once specified will be used for registering of new test run in Zebrunner instead of newly generated uuid
 
 2. Include and enable Zebrunner reporting plugin
 
@@ -75,6 +77,7 @@ The following configuration parameters are recognized by the agent:
 - `REPORTING_RUN_DISPLAY_NAME` - optional value. It is the display name of the test run. The default value is `Default Suite`;
 - `REPORTING_RUN_BUILD` - optional value. It is the build number that is associated with the test run. It can depict either the test build number or the application build number;
 - `REPORTING_RUN_ENVIRONMENT` - optional value. It is the environment where the tests will run.
+- `REPORTING_CI_RUN_ID` - optional value. Predefined id of test run in Zebrunner.
 
 ### Tracking test maintainer
 
@@ -154,3 +157,11 @@ Also agent automatically sends video of entire spec execution to Zebrunner for e
 You may find it attached to appropriate test results page.     
 Note:    
 Do not start name of your test methods from `(` symbol in order to get your screenshot saved properly     
+
+### Parallelized runs
+When results are getting tracked in Zebrunner all of them are coming into single test run instance. Such approach is followed for parallel tests execution as well.    
+To set up proper tracking of parallel runs with Zebrunner you need to specify CI run id parameter. See configuration section to figure out how to make this using `reportingCiRunId` cypress property or `REPORTING_CI_RUN_ID` environment variable.    
+CI run id must be unique value across Zebrunner project. So simple CI build number will not work as it might intercept with runs on another pipelines within same Jenkins instance.    
+For example to generate new value inside of Jenkins pipeline you could you construction like this:    
+`REPORTING_CI_RUN_ID = UUID.randomUUID().toString()`
+Solution was tested with cypress dashboard parallelization approach.    
