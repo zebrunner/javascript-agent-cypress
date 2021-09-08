@@ -155,13 +155,11 @@ By default agent pushes to Zebrunner server screenshot for every test failure.
 You may find it in the details for the failed tests at the report page.
 Also agent automatically sends video of entire spec execution to Zebrunner for every failed test.
 You may find it attached to appropriate test results page.     
-Note:    
-Do not start name of your test methods from `(` symbol in order to get your screenshot saved properly     
 
 ### Parallelized runs
 When results are getting tracked in Zebrunner all of them are coming into single test run instance. Such approach is followed for parallel tests execution as well.    
 To set up proper tracking of parallel runs with Zebrunner you need to specify CI run id parameter. See configuration section to figure out how to make this using `reportingCiRunId` cypress property or `REPORTING_CI_RUN_ID` environment variable.    
 CI run id must be unique value across Zebrunner project. So simple CI build number will not work as it might intercept with runs on another pipelines within same Jenkins instance.    
 For example to generate new value inside of Jenkins pipeline you could you construction like this:    
-`REPORTING_CI_RUN_ID = UUID.randomUUID().toString()`
-Solution was tested with cypress dashboard parallelization approach.    
+`REPORTING_CI_RUN_ID = UUID.randomUUID().toString()`     
+Note: Solution was tested with cypress dashboard parallelization approach.    
