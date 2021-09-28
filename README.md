@@ -1,9 +1,5 @@
 # Zebrunner Cypress agent
 
-> **Incubation warning**
->
-> Please note, that agent is currently in an **incubating state**, meaning that Zebrunner team can not guarantee its stable work since it was not properly tested.
-
 ## Inclusion into your project
 
 In order to install the reporting agent dependency please execute the following command:
