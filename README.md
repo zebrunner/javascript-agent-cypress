@@ -96,25 +96,21 @@ Zebrunner provides built in integration with TestRail test case management tool.
 To enable integration with TestRail it's needed to set next properties in `reporterOptions` of your `cypress.json`:
 ```json
     "reportingTestrailEnabled": "",
-    "reportingTestrailProjectId": "",
     "reportingTestrailSuiteId": "",
     "reportingTestrailTestrunName": "",
+    "reportingTestrailTestrunID": "",
     "reportingTestrailMilestone": "",
     "reportingTestrailAssignee": "",
-    "reportingTestrailSearchInterval": "",
-    "reportingTestrailRunExists": "",
     "reportingTestrailIncludeAll": ""
 ```
 
 Here's the summary of configuration parameters:
 - `reportingTestrailEnabled` - _true_ of _false_ to enable or disable integration
-- `reportingTestrailProjectId` - ID of associated test project in TestRail
 - `reportingTestrailSuiteId` - ID of suite in TestRail
 - `reportingTestrailTestrunName` - (optional) name of existent test run in TestRail
+- `reportingTestrailTestrunID` - (optional) ID of existent test run in TestRail
 - `reportingTestrailMilestone` - (optional) milestone for the run in TestRail
 - `reportingTestrailAssignee` - (optional) assignee for the run in TestRail
-- `reportingTestrailSearchInterval` - (optional) interval for searching of existent runs in TestRail
-- `reportingTestrailRunExists` - (optional) _true_ or _false_ search or not for existing run in TestRail in order to update it rather than register new run
 - `reportingTestrailIncludeAll` - (optional)
 
 To map TestRail case ID to test body the following metadata attribute should be added to test implementation:
