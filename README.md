@@ -116,10 +116,16 @@ Here's the summary of configuration parameters:
 To map TestRail case ID to test body the following metadata attribute should be added to test implementation:
 ```javascript
 describe('some spec', () => {
-  it('test name', {'testrailTestCaseId': 'case_ids'}, () => {...}
+  it('test name', {'testrailTestCaseId': 'case_id'}, () => {...}
 }
 ```
-where `case_ids` is the list of related TestRail test case IDs split by a comma.
+where `case_id` is related TestRail test case ID.    
+If you need to pass multiple case IDs at once please follow the next pattern:   
+```javascript
+describe('some spec', () => {
+  it('test name', {'testrailTestCaseId': ['case_id_1', 'case_id_2']}, () => {...}
+}
+``` 
 
 ### Integration with Xray
 
