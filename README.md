@@ -29,7 +29,9 @@ This section contains details on configuration required for the reporter and key
             "reportingRunBuild": "1.0-alpha",
             "reportingRunDisplayName": "My regression suite",
             "reportingRunLocale": "en_US",
-            "reportingCiRunId": "46190073-55db-4411-ac42-fd42b7c96958"
+            "reportingCiRunId": "46190073-55db-4411-ac42-fd42b7c96958",
+            "reportingSlackChannels": "",
+            "reportingEmailRecipients": ""
         }
     ```
 
@@ -42,6 +44,8 @@ This section contains details on configuration required for the reporter and key
     - `reportingRunDisplayName` (optional) - display name of the test run
     - `reportingRunLocale` (optional) - locale, that will be displayed for the run in Zebrunner if specified
     - `reportingCiRunId` (optional) - id of the run on CI. Once specified will be used for registering of new test run in Zebrunner instead of newly generated uuid
+    - `reportingSlackChannels` (optional) - comma separated list of slack channels for notifications
+    - `reportingEmailRecipients` (optional) - comma separated list of recipients for email notifications
 
 2. Include and enable Zebrunner reporting plugin
 
@@ -74,6 +78,8 @@ The following configuration parameters are recognized by the agent:
 - `REPORTING_RUN_BUILD` - optional value. It is the build number that is associated with the test run. It can depict either the test build number or the application build number;
 - `REPORTING_RUN_ENVIRONMENT` - optional value. It is the environment where the tests will run.
 - `REPORTING_CI_RUN_ID` - optional value. Predefined id of test run in Zebrunner.
+- `REPORTING_SLACK_CHANNELS` - optional value. Predefined list of slack channels for results notifications.
+- `REPORTING_EMAIL_RECIPIENTS` - optional value. Predefined list of recipients for email notifications.
 
 ### Tracking test maintainer
 
