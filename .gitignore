@@ -3,4 +3,3 @@ log/
 cypress/
 cypress.json
 javascript-agent-cypress.code-workspace
-package-lock.json
