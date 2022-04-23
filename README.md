@@ -160,6 +160,26 @@ You may find it in the details for the failed tests at the report page.
 Also agent automatically sends video of entire spec execution to Zebrunner for every failed test.
 You may find it attached to appropriate test results page.     
 
+### Logging
+By default logging is disabled.    
+To enable logging of agent output data to file you need to add next parameter in reporterOptions of your cypress.config:    
+```"reportingLoggingEnabled": true```     
+Also that's possible to choose level of logging. By default it's 'info'.     
+But you can choose out of 'debug', 'info', 'warn' and 'error'.     
+To set level you need to add next parameter in reporterOptions of your cypress.config:    
+```"reportingLoggingLevel": "debug"```     
+So entire configuration could look like:
+```json
+  "reporter": "@zebrunner/javascript-agent-cypress",
+  "reporterOptions": {
+    ...
+    "reportingLoggingEnabled": true,
+    "reportingLoggingLevel": "debug"
+  }
+```
+Please note if logging is enabled then .log files will be rotated on daily basis.    
+Also old files (dated older than 14 days ago) will be cleaned up automatically with new executions of tests.    
+
 ### Parallelized runs
 When results are getting tracked in Zebrunner all of them are coming into single test run instance. Such approach is followed for parallel tests execution as well.    
 To set up proper tracking of parallel runs with Zebrunner you need to specify CI run id parameter. See configuration section to figure out how to make this using `reportingCiRunId` cypress property or `REPORTING_CI_RUN_ID` environment variable.    
