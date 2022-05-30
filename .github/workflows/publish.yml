@@ -14,10 +14,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.13.1
-      - name: yarn install
-        run: yarn install
-      - name: build
-        run: npm run build
+      - name: npm install
+        run: npm install
+      # - name: build
+      #   run: npm run build
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
