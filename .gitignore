@@ -3,3 +3,5 @@ log/
 cypress/
 cypress.json
 javascript-agent-cypress.code-workspace
+temp
+.env

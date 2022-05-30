@@ -169,7 +169,7 @@ But you can choose out of 'debug', 'info', 'warn' and 'error'.
 To set level you need to add next parameter in reporterOptions of your cypress.config:    
 ```"reportingLoggingLevel": "debug"```     
 So entire configuration could look like:
-```json
+```js
   "reporter": "@zebrunner/javascript-agent-cypress",
   "reporterOptions": {
     ...
