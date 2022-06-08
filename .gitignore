@@ -5,3 +5,4 @@ cypress.json
 javascript-agent-cypress.code-workspace
 temp
 .env
+.DS_Store
