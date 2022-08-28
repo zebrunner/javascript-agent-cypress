@@ -23,5 +23,8 @@ module.exports = {
     'consistent-return': 0,
     camelcase: 0,
     'no-underscore-dangle': 0,
+    'no-promise-executor-return': 0,
+    'no-template-curly-in-string': 0,
+    'new-cap': 0,
   },
 };
