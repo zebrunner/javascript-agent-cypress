@@ -29,7 +29,6 @@ This section contains details on configuration required for the reporter and key
             "reportingRunBuild": "1.0-alpha",
             "reportingRunDisplayName": "My regression suite",
             "reportingRunLocale": "en_US",
-            "reportingCiRunId": "46190073-55db-4411-ac42-fd42b7c96958",
             "reportingSlackChannels": "",
             "reportingEmailRecipients": ""
         }
@@ -43,7 +42,6 @@ This section contains details on configuration required for the reporter and key
     - `reportingRunBuild` (optional) - build number that is associated with the test run. It can depict either the test build number or the application build number
     - `reportingRunDisplayName` (optional) - display name of the test run
     - `reportingRunLocale` (optional) - locale, that will be displayed for the run in Zebrunner if specified
-    - `reportingCiRunId` (optional) - id of the run on CI. Once specified will be used for registering of new test run in Zebrunner instead of newly generated uuid
     - `reportingSlackChannels` (optional) - comma separated list of slack channels for notifications
     - `reportingEmailRecipients` (optional) - comma separated list of recipients for email notifications
 
@@ -52,7 +50,7 @@ This section contains details on configuration required for the reporter and key
    Add the following to `cypress/plugins/index.js` file:
     ```javascript
     const zbrPlugin = require('@zebrunner/javascript-agent-cypress/lib/plugin');
-    
+
     module.exports = (on, config) => { zbrPlugin(on, config); }
     ```
 
@@ -60,7 +58,7 @@ This section contains details on configuration required for the reporter and key
     ```javascript
     require('@zebrunner/javascript-agent-cypress/lib/commands/commands');
     ```
-   
+
 3. In order to track browser in Zebrunner run include next lines in cypress/support/index.js file
 ```javascript
 before(() => {
@@ -77,7 +75,6 @@ The following configuration parameters are recognized by the agent:
 - `REPORTING_RUN_DISPLAY_NAME` - optional value. It is the display name of the test run. The default value is `Default Suite`;
 - `REPORTING_RUN_BUILD` - optional value. It is the build number that is associated with the test run. It can depict either the test build number or the application build number;
 - `REPORTING_RUN_ENVIRONMENT` - optional value. It is the environment where the tests will run.
-- `REPORTING_CI_RUN_ID` - optional value. Predefined id of test run in Zebrunner.
 - `REPORTING_SLACK_CHANNELS` - optional value. Predefined list of slack channels for results notifications.
 - `REPORTING_EMAIL_RECIPIENTS` - optional value. Predefined list of recipients for email notifications.
 
@@ -125,13 +122,13 @@ describe('some spec', () => {
   it('test name', {'testrailTestCaseId': 'case_id'}, () => {...}
 }
 ```
-where `case_id` is related TestRail test case ID.    
-If you need to pass multiple case IDs at once please follow the next pattern:   
+where `case_id` is related TestRail test case ID.
+If you need to pass multiple case IDs at once please follow the next pattern:
 ```javascript
 describe('some spec', () => {
   it('test name', {'testrailTestCaseId': ['case_id_1', 'case_id_2']}, () => {...}
 }
-``` 
+```
 
 ### Integration with Xray
 
@@ -158,16 +155,16 @@ where `test_keys` is list of related Xray cases split by a comma.
 By default agent pushes to Zebrunner server screenshot for every test failure.
 You may find it in the details for the failed tests at the report page.
 Also agent automatically sends video of entire spec execution to Zebrunner for every failed test.
-You may find it attached to appropriate test results page.     
+You may find it attached to appropriate test results page.
 
 ### Logging
-By default logging is disabled.    
-To enable logging of agent output data to file you need to add next parameter in reporterOptions of your cypress.config:    
-```"reportingLoggingEnabled": true```     
-Also that's possible to choose level of logging. By default it's 'info'.     
-But you can choose out of 'debug', 'info', 'warn' and 'error'.     
-To set level you need to add next parameter in reporterOptions of your cypress.config:    
-```"reportingLoggingLevel": "debug"```     
+By default logging is disabled.
+To enable logging of agent output data to file you need to add next parameter in reporterOptions of your cypress.config:
+```"reportingLoggingEnabled": true```
+Also that's possible to choose level of logging. By default it's 'info'.
+But you can choose out of 'debug', 'info', 'warn' and 'error'.
+To set level you need to add next parameter in reporterOptions of your cypress.config:
+```"reportingLoggingLevel": "debug"```
 So entire configuration could look like:
 ```js
   "reporter": "@zebrunner/javascript-agent-cypress",
@@ -177,13 +174,5 @@ So entire configuration could look like:
     "reportingLoggingLevel": "debug"
   }
 ```
-Please note if logging is enabled then .log files will be rotated on daily basis.    
-Also old files (dated older than 14 days ago) will be cleaned up automatically with new executions of tests.    
-
-### Parallelized runs
-When results are getting tracked in Zebrunner all of them are coming into single test run instance. Such approach is followed for parallel tests execution as well.    
-To set up proper tracking of parallel runs with Zebrunner you need to specify CI run id parameter. See configuration section to figure out how to make this using `reportingCiRunId` cypress property or `REPORTING_CI_RUN_ID` environment variable.    
-CI run id must be unique value across Zebrunner project. So simple CI build number will not work as it might intercept with runs on another pipelines within same Jenkins instance.    
-For example to generate new value inside of Jenkins pipeline you could you construction like this:    
-`REPORTING_CI_RUN_ID = UUID.randomUUID().toString()`     
-Note: Solution was tested with cypress dashboard parallelization approach.    
+Please note if logging is enabled then .log files will be rotated on daily basis.
+Also old files (dated older than 14 days ago) will be cleaned up automatically with new executions of tests.
