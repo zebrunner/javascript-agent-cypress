@@ -86,8 +86,8 @@ Zebrunner comes with a concept of a maintainer - a person that can be assigned t
 `owner` attribute should be set in your test implementation. Here is an example:
 ```javascript
 describe('some spec', () => {
-  it('test name', {'owner': '<username>'}, () => {...}
-}
+  it('test name', {'owner': '<username>'}, () => {...})
+})
 ```
 
 The maintainer username should be a valid Zebrunner username, otherwise it will be set to `anonymous`.
@@ -119,15 +119,15 @@ Here's the summary of configuration parameters:
 To map TestRail case ID to test body the following metadata attribute should be added to test implementation:
 ```javascript
 describe('some spec', () => {
-  it('test name', {'testrailTestCaseId': 'case_id'}, () => {...}
-}
+  it('test name', {'testrailTestCaseId': 'case_id'}, () => {...})
+})
 ```
 where `case_id` is related TestRail test case ID.
 If you need to pass multiple case IDs at once please follow the next pattern:
 ```javascript
 describe('some spec', () => {
-  it('test name', {'testrailTestCaseId': ['case_id_1', 'case_id_2']}, () => {...}
-}
+  it('test name', {'testrailTestCaseId': ['case_id_1', 'case_id_2']}, () => {...})
+})
 ```
 
 ### Integration with Xray
@@ -146,18 +146,110 @@ where parameters are:
 To map Xray case to test body the following metadata attribute should be added to test implementation:
 ```javascript
 describe('some spec', () => {
-  it('test name', {'xrayTestKey': 'test_keys'}, () => {...}
-}
+  it('test name', {'xrayTestKey': 'test_keys'}, () => {...})
+})
 ```
 where `test_keys` is list of related Xray cases split by a comma.
 
+### Integration with Zebrunner Test Case Management (TCM)
+
+Zebrunner integrates with Zebrunner Test Case Management (TCM) system and provides the following capabilities:
+
+1. Linking test cases to test executions
+2. Previewing linked test cases in Zebrunner
+3. Pushing test execution results to the TCM system
+
+If you want to push the execution results to the TCM system, you need to provide additional configuration for the Agent using `reporterOptions` of your `cypress.json` file or environment variables as described below.
+
+| Env var / Reporter config                                                      | Description                                                                                                                                                             |
+|--------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `REPORTING_TCM_ZEBRUNNER_PUSH_RESULTS`<br/>`tcm.zebrunner.pushResults`         | Boolean value which specifies if the execution results should be pushed to Zebrunner TCM. The default value is `false`.                                                 |
+| `REPORTING_TCM_ZEBRUNNER_PUSH_IN_REAL_TIME`<br/>`tcm.zebrunner.pushInRealTime` | Boolean value. Specifies whether to push execution results immediately after each test is finished (value `true`) or not (value `false`). The default value is `false`. |
+| `REPORTING_TCM_ZEBRUNNER_TEST_RUN_ID`<br/>`tcm.zebrunner.testRunId`            | Numeric id of the target Test Run in Zebrunner TCM. If a value is not provided, no new runs will be created. 
+
+```json
+    "reporter": "@zebrunner/javascript-agent-cypress",
+    "reporterOptions": {
+        "reportingServerHostname": "<YOUR_ZEBRUNNER_SERVER_URL>",
+        // ...
+        "tcm": {
+            "zebrunner": {
+              "pushResults": true,
+              "pushInRealTime": true,
+              "testRunId": 18
+            }
+        }
+    }
+```
+
+The Agent comes with following custom commands:
+
+- `cy.zebrunnerTestCaseKey(...testCaseKeys)` — accepts a list of test cases which should be linked to the current test;
+- `cy.zebrunnerTestCaseStatus(testCaseKey, resultStatus)` — links one test case and provides\overrides its result status. This may be useful if the test case result status does not correlate with the test execution status or if you have conditional logic determining the actual result status for the test case.
+
+If these methods are invoked for the same test case id many times within a test method, the last invocation will take precedence. For example, if you invoke the `cy.zebrunnerTestCaseStatus('KEY-1', 'SKIPPED')` first, and then invoke the `cy.zebrunnerTestCaseKey('KEY-1')`, then the result status you provided in the first invocation will be ignored.
+
+```js
+describe('some spec', () => {
+
+  it('test name', () => {
+    cy.zebrunnerTestCaseKey('KEY-1', 'KEY-2', 'KEY-3');
+    if (someCondition) {
+      // overriddes the status of the test case when results are pushed to the Zebrunner TCM.
+      // using this method, you can manually specify the desired result status. 
+      cy.zebrunnerTestCaseStatus('KEY-2', 'FAILED');
+    }
+  })
+})
+```
+
+#### Custom Result Statuses
+
+By default, when the execution results are being pushed to a TCM system, Zebrunner maps each test execution result to an appropriate result status in the target TCM system. Most of the time this works perfectly, but in some cases Zebrunner is not able to derive the appropriate target result status.
+
+One of the examples of such cases is when a test case result status does not correlate with the test execution status, or when you have conditional logic determining the actual result status for the test case. For such cases, the Agent comes with a special method which sets a specific Result Status to the test case. 
+
+Another example is custom Result Statuses in the target TCM system. In this case, we cannot anticipate the correct status and simply skip the test execution. In order to tackle this, Zebrunner allows you to configure default status for passed and failed test executions (for skipped tests, this is not technically possible).
+
+| Env var / Reporter config                                                | Description                                                                                              |
+|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| `REPORTING_TCM_TEST_CASE_STATUS_ON_PASS`<br/>`tcm.testCaseStatus.onPass` | The default status that will be assigned to passed test executions when they are pushed to a TCM system. |
+| `REPORTING_TCM_TEST_CASE_STATUS_ON_FAIL`<br/>`tcm.testCaseStatus.onFail` | The default status that will be assigned to failed test executions when they are pushed to a TCM system. |
+
+```json
+    "reporter": "@zebrunner/javascript-agent-cypress",
+    "reporterOptions": {
+        "reportingServerHostname": "<YOUR_ZEBRUNNER_SERVER_URL>",
+        // ...
+        "tcm": {
+            "testCaseStatus": {
+              "onPass": "PASSED",
+              "onFail": "FAILED"
+            },
+            "zebrunner": {
+              "pushResults": true,
+              "pushInRealTime": true,
+              "testRunId": 18
+            }
+        }
+    }
+```
+
+When pushing results to a TCM system, Zebrunner derives the Result Status in the following order:
+
+1. Checks the explicitly assigned value (which was assigned using the `cy.zebrunnerTestCaseStatus()` method).
+2. Takes the default status provided via configuration for passed and/or failed tests.
+3. Uses internal mapping of Zebrunner statuses to the Result Statuses of the target TCM system.
+
 ### Tracking of test artifacts
+
 By default agent pushes to Zebrunner server screenshot for every test failure.
 You may find it in the details for the failed tests at the report page.
 Also agent automatically sends video of entire spec execution to Zebrunner for every failed test.
 You may find it attached to appropriate test results page.
 
 ### Logging
+
 By default logging is disabled.
 To enable logging of agent output data to file you need to add next parameter in reporterOptions of your cypress.config:
 ```"reportingLoggingEnabled": true```
