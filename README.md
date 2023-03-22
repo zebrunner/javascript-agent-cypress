@@ -1,5 +1,8 @@
 # Zebrunner Cypress agent
 
+The official Zebrunner Cypress reporting agent. 
+The Agent works with Cypress v9 and does not support newer versions for now.
+
 ## Inclusion into your project
 
 ### Adding dependency
@@ -13,7 +16,7 @@ npm install @zebrunner/javascript-agent-cypress
 
 The agent does not work automatically after adding it into the project, it requires extra configuration. For this, you need to perform the following 3 steps:
 
-1. Enable reporting plugin in your `cypress/plugins/index.js` file:
+1. Enable reporting plugin in your [Plugins file](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Plugins-file) (e.g. `cypress/plugins/index.js`):
 
 ```javascript
 const zbrPlugin = require('@zebrunner/javascript-agent-cypress/lib/plugin');
@@ -21,13 +24,13 @@ const zbrPlugin = require('@zebrunner/javascript-agent-cypress/lib/plugin');
 module.exports = (on, config) => { zbrPlugin(on, config); }
 ```
 
-2. Add reporting commands by including the following in your `cypress/support/commands.js`:
+2. Add reporting commands by including the following in your [Custom commands file](https://docs.cypress.io/api/cypress-api/custom-commands) (e.g. `cypress/support/commands.js`):
 
 ```javascript
 require('@zebrunner/javascript-agent-cypress/lib/commands/commands');
 ```
 
-3. In order to enable browser registration in Zebrunner, include the following code in your `cypress/support/index.js` file where `cy.registerBrowser` is a custom command provided by Zebrunner:
+3. In order to enable browser registration in Zebrunner, include the following code in your [Support file](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#Support-file) (e.g. `cypress/support/index.js`) file where `cy.registerBrowser` is a custom command provided by Zebrunner:
 
 ```javascript
 import './commands';
@@ -44,7 +47,7 @@ Once the agent package is included and enabled in your test project, the valid c
 It is currently possible to provide the configuration via:
 
 1. Environment variables 
-2. cypress.json
+2. `cypress.json` config file
 
 The configuration lookup will be performed in the order listed above.
 It is also possible to override configuration parameters by passing them through a configuration provider with higher precedence.
@@ -56,13 +59,13 @@ The following configuration parameters are recognized by the agent:
 | Parameter                       | Description                                                                                                                                                                  |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `REPORTING_SERVER_HOSTNAME`     | Mandatory if reporting is enabled. It is Zebrunner server hostname. It can be obtained in Zebrunner on the 'Account & profile' page under the 'Service URL' section          |
-| `REPORTING_SERVER_ACCESS_TOKEN` | Mandatory if reporting is enabled. Access token must be used to perform API calls. It can be obtained in Zebrunner on the 'Account & profile' page under the 'Token' section |
+| `REPORTING_SERVER_ACCESS_TOKEN` | Mandatory if reporting is enabled. Access token must be used to perform API calls. It can be obtained in Zebrunner on the 'Account & profile' page under the 'API Access' tab |
 | `REPORTING_PROJECT_KEY`         | Optional value. It is the project that the test run belongs to. The default value is `DEF`. You can manage projects in Zebrunner in the appropriate section                  |
-| `REPORTING_RUN_DISPLAY_NAME`    | Optional value. It is the display name of the test run. The default value is `Default Suite`                                                                                 |
+| `REPORTING_RUN_DISPLAY_NAME`    | Optional value. It is the display name of the test run. The default value is the name of first executed test file name |
 | `REPORTING_RUN_BUILD`           | Optional value. It is the build number that is associated with the test run. It can depict either the test build number or the application build number                      |
-| `REPORTING_RUN_ENVIRONMENT`     | Optional value. It is the environment where the tests will run                                                                                                               |
-| `REPORTING_SLACK_CHANNELS`           | Optional value. Predefined list of Slack channels for results notifications. |
-| `REPORTING_EMAIL_RECIPIENTS`           | Optional value. Predefined list of recipients for Email notifications. |
+| `REPORTING_RUN_ENVIRONMENT`     | Optional value. It is the environment where the tests will run  |
+| `REPORTING_SLACK_CHANNELS`           | Optional value. Predefined list of Slack channels for results notifications |
+| `REPORTING_EMAIL_RECIPIENTS`           | Optional value. Predefined list of recipients for Email notifications |
 
 ### via Cypress config
 
@@ -71,6 +74,7 @@ In order to configure agent via Cypress config (`cypress.json` by default), repo
 Please see reporter configuration snippet below:
 
 ```json
+{
   "reporter": "@zebrunner/javascript-agent-cypress",
   "reporterOptions": {
       "reportingServerHostname": "<YOUR_ZEBRUNNER_SERVER_URL>",
@@ -83,6 +87,7 @@ Please see reporter configuration snippet below:
       "reportingSlackChannels": "dev",
       "reportingEmailRecipients": "manager@mycompany.com"
   }
+}
 ```
 
 The following configuration parameters are recognized by the agent:
@@ -90,14 +95,43 @@ The following configuration parameters are recognized by the agent:
 | Parameter                    | Description                                                                                                                                                                  |
 | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `reportingServerHostname`    | Mandatory if reporting is enabled. It is Zebrunner server hostname. It can be obtained in Zebrunner on the 'Account & profile' page under the 'Service URL' section          |
-| `reportingServerAccessToken` | Mandatory if reporting is enabled. Access token must be used to perform API calls. It can be obtained in Zebrunner on the 'Account & profile' page under the 'Token' section |
+| `reportingServerAccessToken` | Mandatory if reporting is enabled. Access token must be used to perform API calls. It can be obtained in Zebrunner on the 'Account & profile' page under the 'API Access' tab |
 | `reportingProjectKey`        | Optional value. It is the project that the test run belongs to. The default value is `DEF`. You can manage projects in Zebrunner in the appropriate section                  |
-| `reportingRunDisplayName`    | Optional value. It is the display name of the test run. The default value is `Default Suite`                                                                                 |
+| `reportingRunDisplayName`    | Optional value. It is the display name of the test run. The default value is the name of first executed test file name                                                                                 |
 | `reportingRunBuild`          | Optional value. It is the build number that is associated with the test run. It can depict either the test build number or the application build number                      |
-| `reportingRunEnvironment`    | Optional value. It is the environment where the tests will run                                                                                                               |
-| `reportingRunLocale`         | Optional value. Locale, that will be displayed for the run in Zebrunner if specified.|
+| `reportingRunEnvironment`    | Optional value. It is the environment where the tests will run |
+| `reportingRunLocale`         | Optional value. Locale, that will be displayed for the run in Zebrunner if specified |
 | `reportingSlackChannels`         | Optional value. Comma separated list of slack channels for notifications.|
 | `reportingEmailRecipients`         | Optional value. Comma separated list of recipients for email notifications.|
+
+## Launcher configuration
+
+Zebrunner Launcher provides a great way to execute tests without having to worry about the runtime environment.
+
+> To learn more about the Zebrunner Launcher and all it's capabilities, refer to the [Zebrunner Launcher](https://zebrunner.com/documentation/guide/launchers/) documentation page.
+
+The Cypress Agent is fully integrated with the Zebrunner Launcher and requires even less configuration when used with it. The Zebrunner Launcher automatically provides `REPORTING_ENABLED`, `REPORTING_PROJECT_KEY`, `REPORTING_SERVER_HOSTNAME`, `REPORTING_SERVER_ACCESS_TOKEN` and some other environment variables, so there is no need to explicitly specify them or the corresponding `cypress.json` file properties.
+
+If you have included the Zebrunner Agent into your project and pushed the changes to a Git repository, you can easily run your tests using Zebrunner Launcher. For this, you need to navigate to Zebrunner Launcher and add the Git repository (if you have not already). Next, add a new Launcher for the Git repo.
+
+Configuration of the Launcher for Cypress tests is pretty straightforward:
+
+1. Add a meaningful name for the Launcher.
+2. Select a Git branch to launch tests from.
+3. Make sure the **Zebrunner Executor** is selected as the Execution Environment.
+4. Select `public.ecr.aws/zebrunner/cypress:latest` docker image in the dropdown.
+5. Enter the launch command. Since each launch with Zebrunner Launcher starts from scratch, you need to install project dependencies as part of the launch command.
+   An example of the launch command is `npm install && npx cypress run --headed`.
+> Note: it is recommended to put explicitly `--headed` argument to display the browser (instead of running headlessly) for capturing videos.
+6. If necessary, add environment variables that will be passed to the tests at runtime.
+7. Select a configured Testing Platform (e.g. Zebrunner Selenium Grid) along with operating system and/or desired browser.
+8. If the launcher is configured, hit the **Add** button at the bottom of the page.
+
+![Example of launcher configuration](./images/launcher_config.png)
+
+Now you can launch the tests using Zebrunner CyServer. To do this, click the **Launch** button which is located under the configuration of the selected launcher.
+
+If something went wrong while running the tests, you can examine the logs captured from the docker container. If the launch is stuck in "In Progress" status and there is no link to the logs file, you need to manually abort the launch in the 3-dot menu.
 
 ## Parallelized runs
 
@@ -107,7 +141,7 @@ CI run id must be unique value across Zebrunner project. So simple CI build numb
 For example to generate new value inside of Jenkins pipeline you could you construction like this:
 `REPORTING_CI_RUN_ID = UUID.randomUUID().toString()`.
 
-> Note: Solution was tested with Cypress dashboard parallelization approach.
+> Note: Solution has been tested with Cypress dashboard parallelization approach.
 
 ## Tracking test maintainer
 
@@ -126,9 +160,8 @@ The maintainer username should be a valid Zebrunner username, otherwise it will 
 ## Collecting additional artifacts
 
 By default agent pushes to Zebrunner server screenshot for every test failure.
-You may find it in the details for the failed tests at the report page.
 Also agent automatically sends video of entire spec execution to Zebrunner for every failed test.
-You may find it attached to appropriate test results page.
+You may find them attached in the appropriate test results page.
 
 ## Syncing test executions with external TCM systems
 
@@ -212,18 +245,20 @@ If you want to push the execution results to the TCM system, you need to provide
 | `REPORTING_TCM_ZEBRUNNER_TEST_RUN_ID`<br/>`tcm.zebrunner.testRunId`            | Numeric id of the target Test Run in Zebrunner TCM. If a value is not provided, no new runs will be created. 
 
 ```json
-    "reporter": "@zebrunner/javascript-agent-cypress",
-    "reporterOptions": {
-        "reportingServerHostname": "<YOUR_ZEBRUNNER_SERVER_URL>",
-        // ...
-        "tcm": {
-            "zebrunner": {
-              "pushResults": true,
-              "pushInRealTime": true,
-              "testRunId": 18
-            }
-        }
-    }
+{
+  "reporter": "@zebrunner/javascript-agent-cypress",
+  "reporterOptions": {
+      "reportingServerHostname": "<YOUR_ZEBRUNNER_SERVER_URL>",
+      // ...
+      "tcm": {
+          "zebrunner": {
+            "pushResults": true,
+            "pushInRealTime": true,
+            "testRunId": 18
+          }
+      }
+  }
+}
 ```
 
 The Agent comes with following custom commands:
@@ -261,22 +296,24 @@ Another example is custom Result Statuses in the target TCM system. In this case
 | `REPORTING_TCM_TEST_CASE_STATUS_ON_FAIL`<br/>`tcm.testCaseStatus.onFail` | The default status that will be assigned to failed test executions when they are pushed to a TCM system. |
 
 ```json
-    "reporter": "@zebrunner/javascript-agent-cypress",
-    "reporterOptions": {
-        "reportingServerHostname": "<YOUR_ZEBRUNNER_SERVER_URL>",
-        // ...
-        "tcm": {
-            "testCaseStatus": {
-              "onPass": "PASSED",
-              "onFail": "FAILED"
-            },
-            "zebrunner": {
-              "pushResults": true,
-              "pushInRealTime": true,
-              "testRunId": 18
-            }
-        }
-    }
+{
+  "reporter": "@zebrunner/javascript-agent-cypress",
+  "reporterOptions": {
+      "reportingServerHostname": "<YOUR_ZEBRUNNER_SERVER_URL>",
+      // ...
+      "tcm": {
+          "testCaseStatus": {
+            "onPass": "PASSED",
+            "onFail": "FAILED"
+          },
+          "zebrunner": {
+            "pushResults": true,
+            "pushInRealTime": true,
+            "testRunId": 18
+          }
+      }
+  }
+}
 ```
 
 When pushing results to a TCM system, Zebrunner derives the Result Status in the following order:
@@ -287,22 +324,16 @@ When pushing results to a TCM system, Zebrunner derives the Result Status in the
 
 ### Logging
 
-By default logging is disabled.
-To enable logging of agent output data to file you need to add next parameter in reporterOptions of your cypress.config:
-```"reportingLoggingEnabled": true```
-Also that's possible to choose level of logging. By default it's 'info'.
-But you can choose out of 'debug', 'info', 'warn' and 'error'.
-To set level you need to add next parameter in reporterOptions of your cypress.config:
-```"reportingLoggingLevel": "debug"```
+By default agent logging of output data is `disabled`. To enable logging to file, you need to add `reportingLoggingEnabled` parameter with `true` value to your `cypress.json`. Moreover it is possible to choose level of logging by setting `reportingLoggingLevel` parameter. By default it is `info`, but you can select one of the next options: `debug` | `info` | `warn` | `error`.
 
-So entire configuration could look like:
 ```json
+{
   "reporter": "@zebrunner/javascript-agent-cypress",
   "reporterOptions": {
     // ...
     "reportingLoggingEnabled": true,
     "reportingLoggingLevel": "debug"
   }
+}
 ```
-Please note if logging is enabled then .log files will be rotated on daily basis.
-Also old files (dated older than 14 days ago) will be cleaned up automatically with new executions of tests.
+> Note: If logging is enabled, then `.log` files will be rotated on daily basis. Also old files (dated older than 14 days ago) will be cleaned up automatically with new test executions.
