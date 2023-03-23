@@ -1,7 +1,7 @@
 # Zebrunner Cypress agent
 
 The official Zebrunner Cypress reporting agent. 
-The Agent works with Cypress v9 and does not support newer versions for now.
+The Agent works with Cypress v9.7.0 and does not support newer versions for now.
 
 ## Inclusion into your project
 
@@ -80,8 +80,6 @@ Please see reporter configuration snippet below:
       "reportingServerHostname": "<YOUR_ZEBRUNNER_SERVER_URL>",
       "reportingServerAccessToken": "<YOUR_ZEBRUNNER_ACCESS_TOKEN>",
       "reportingProjectKey": "DEF",
-      "reportingRunEnvironment": "STAGE",
-      "reportingRunBuild": "1.0-alpha",
       "reportingRunDisplayName": "My regression suite",
       "reportingRunLocale": "en_US",
       "reportingSlackChannels": "dev",
@@ -98,8 +96,6 @@ The following configuration parameters are recognized by the agent:
 | `reportingServerAccessToken` | Mandatory if reporting is enabled. Access token must be used to perform API calls. It can be obtained in Zebrunner on the 'Account & profile' page under the 'API Access' tab |
 | `reportingProjectKey`        | Optional value. It is the project that the test run belongs to. The default value is `DEF`. You can manage projects in Zebrunner in the appropriate section                  |
 | `reportingRunDisplayName`    | Optional value. It is the display name of the test run. The default value is the name of first executed test file name                                                                                 |
-| `reportingRunBuild`          | Optional value. It is the build number that is associated with the test run. It can depict either the test build number or the application build number                      |
-| `reportingRunEnvironment`    | Optional value. It is the environment where the tests will run |
 | `reportingRunLocale`         | Optional value. Locale, that will be displayed for the run in Zebrunner if specified |
 | `reportingSlackChannels`         | Optional value. Comma separated list of slack channels for notifications.|
 | `reportingEmailRecipients`         | Optional value. Comma separated list of recipients for email notifications.|
