@@ -8,7 +8,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "child_process": "^1.0.2",
-    "cypress": "^ 9.6.1",
+    "cypress": "^12.9.0",
     "dotenv": "^16.0.1",
     "glob": "^8.0.3",
     "mocha": "^9.1.1",
@@ -17,7 +17,7 @@
     "winston": "^3.7.2",
     "winston-daily-rotate-file": "^4.6.1"
   },
-  "name": "@zebrunner/javascript-agent-cypress",
+  "name": "@zebrunner/javascript-agent-cypress-dev",
   "description": "Zebrunner Agent for Cypress",
   "version": "1.0.45",
   "main": "index.js",
