@@ -17,9 +17,9 @@
     "winston": "^3.7.2",
     "winston-daily-rotate-file": "^4.6.1"
   },
-  "name": "@zebrunner/javascript-agent-cypress-dev",
+  "name": "@zebrunner/javascript-agent-cypress",
   "description": "Zebrunner Agent for Cypress",
-  "version": "1.0.45",
+  "version": "1.1.0",
   "main": "index.js",
   "directories": {
     "lib": "lib"

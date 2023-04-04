@@ -3,7 +3,7 @@ name: Publish package to NPM
 on:
   push:
     branches:
-    - dev # Push events on master branch
+    - master # Push events on master branch
 
 jobs:
   publish:
@@ -21,4 +21,3 @@ jobs:
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          access: public
